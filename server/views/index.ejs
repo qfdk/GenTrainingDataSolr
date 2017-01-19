@@ -1,0 +1,41 @@
+<% include head.ejs %>
+  <% include nav.ejs %>
+
+    <div class="container">
+
+      <div class="jumbotron">
+        <div class="container">
+          <h1>GenTrainingDataSolr</h1>
+          <p>coucou salifou ...</p>
+          <p>
+            <a class="btn btn-primary btn-lg">Learn more</a>
+          </p>
+        </div>
+      </div>
+      <form class="form-horizontal">
+        <div class="form-group">
+          <div class="col-sm-8">
+            <label for="torrentId">KeyWord(s): </label>
+            <input id="url" name="url" type="text" value="skirt" class="form-control">
+          </div>
+        </div>
+      </form>
+      <button id="search" type="button" class="btn btn-primary">Search</button>
+      <button id="download" type="button" class="btn btn-success">Download GenTrainingData</button>
+      <hr/>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Relevancy</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    </div>
+    <% include foot.ejs %>
