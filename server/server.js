@@ -1,9 +1,6 @@
-// ----------------Configure--------------------
-var config = require('./config.js')
 // ---------------Environnement-----------------
 var app = require('express')()
 var server = require('http').Server(app)
-
 var io = require('socket.io')(server)
 var path = require('path')
 var favicon = require('serve-favicon')
@@ -18,13 +15,11 @@ app.use(require('express').static(path.join(__dirname, 'public')))
 server.listen(3000)
 console.log('Server on 3000; http://localhost:3000')
 
-//解决跨域
 app.all('*', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
   res.header('Access-Control-Allow-Methods', 'GET,PUT, POST');
   if (req.method == 'OPTIONS') {
-    /*让options请求快速返回*/
     res.send(200);
   }
   else {
@@ -41,6 +36,10 @@ app.get('/download', function (req, res) {
   map.forEach(function(v,k){
     tmp=v+tmp
   });
+  if(tmp.length===0)
+  {
+    tmp=":X You don't set a note yet."
+  }
   res.end(tmp);
 })
 

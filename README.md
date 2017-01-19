@@ -41,3 +41,5 @@ Add this code in `server/solr-webapp/webapp/WEB-INF/web.xml`
 npm install
 npm run
 ```
+
+![](./imgs/1.png)

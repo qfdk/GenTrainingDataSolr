@@ -1,17 +1,21 @@
 var socket = io.connect("http://" + window.location['hostname'] + ":3000");
 
-$('#download').on('click', function (e) {
+$('#url').keyup(function (e) {
   e.preventDefault()
-  $.get('/download',function(data){
-    console.log(data);
-    $('#rest').append(data);
-  });
-})
+  if (e.keyCode == 13) {
+    search()
+    return false;
+  }
+});
 
 $('#search').on('click', function (e) {
   e.preventDefault()
+  search()
+})
+
+function search() {
   $('.table tbody tr').remove()
-  var tmp = document.querySelector('form input[name=url]').value
+  var tmp = document.querySelector('input[name=url]').value
   $.get("http://localhost:8983/solr/corejouve/select?indent=on&q=" + tmp + "&wt=json", function (data) {
     var json = JSON.parse(data)
     var docs = json.response.docs
@@ -30,7 +34,7 @@ $('#search').on('click', function (e) {
         number: 5,
         click: function (score, e) {
           // alert(score-1)
-          socket.emit('getNote', {id:id,name:name,score:score })
+          socket.emit('getNote', { id: id, name: name, score: score })
         },
         target: '#hint' + index,
         starOff: 'imgs/star-off.png',
@@ -38,4 +42,4 @@ $('#search').on('click', function (e) {
       })
     }, this);
   })
-})
+}
