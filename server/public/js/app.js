@@ -1,14 +1,16 @@
+var socket = io.connect("http://" + window.location['hostname'] + ":3000");
+
 $('#download').on('click', function (e) {
   e.preventDefault()
-  var json = JSON.parse(data)
-  var torrentId = document.querySelector('form input[name=torrentId]').value
-  // var url = "http://" + window.location['hostname'] + ":3000/download?url=" + torrentId
-  socket.emit('download', { torrentId: torrentId })
-
+  $.get('/download',function(data){
+    console.log(data);
+    $('#rest').append(data);
+  });
 })
 
 $('#search').on('click', function (e) {
   e.preventDefault()
+  $('.table tbody tr').remove()
   var tmp = document.querySelector('form input[name=url]').value
   $.get("http://localhost:8983/solr/corejouve/select?indent=on&q=" + tmp + "&wt=json", function (data) {
     var json = JSON.parse(data)
@@ -26,8 +28,9 @@ $('#search').on('click', function (e) {
         hints: ['Not relevant', 'Fair', 'Good', 'Excellent', 'Perfect'],
         start: 0,
         number: 5,
-        click:function(score,e){
+        click: function (score, e) {
           // alert(score-1)
+          socket.emit('getNote', {id:id,name:name,score:score })
         },
         target: '#hint' + index,
         starOff: 'imgs/star-off.png',

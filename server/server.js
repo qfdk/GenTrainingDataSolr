@@ -7,8 +7,8 @@ var server = require('http').Server(app)
 var io = require('socket.io')(server)
 var path = require('path')
 var favicon = require('serve-favicon')
-var sockets = []; // Liste des sockets client
-
+var sockets = [] // Liste des sockets client
+var map = new Map() 
 
 // ------------express-------------------
 app.set('views', path.join(__dirname, 'views'))
@@ -35,3 +35,36 @@ app.all('*', function (req, res, next) {
 app.get('/', function (req, res) {
   res.render('index')
 })
+
+app.get('/download', function (req, res) {
+  var tmp = [];
+  map.forEach(function(v,k){
+    tmp=v+tmp
+  });
+  res.end(tmp);
+})
+
+// ------------------------------------------------
+// -----------------socket.io----------------------
+// ------------------------------------------------
+io.sockets.on('connection', function (socket) {
+
+  //--------------ajouter le client--------------
+  if (sockets.indexOf(socket) === -1) {
+    sockets.push(socket);
+  }
+
+  socket.on('getNote', function (json) {
+    var val = json.id + '|' + json.name + '|' + json.score + '|HUMAN_JUDGEMENT\n';
+    map.set(json.id,val)
+  });
+
+  // ------------supprimer le client----------
+  socket.on('disconnect', function (o) {
+    var indexSocket = sockets.indexOf(socket);
+    if (indexSocket !== -1) {
+      sockets.splice(indexSocket, 1);
+    }
+  });
+
+});
