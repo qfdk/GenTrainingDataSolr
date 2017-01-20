@@ -15,17 +15,36 @@ $('#search').on('click', function (e) {
 
 function search() {
   $('.table tbody tr').remove()
-  var tmp = document.querySelector('input[name=url]').value
-  $.get("http://localhost:8983/solr/corejouve/select?indent=on&q=" + tmp + "&wt=json", function (data) {
+  $('.table thead tr').remove()
+  var q = document.querySelector('input[name=url]').value
+  var fl = document.querySelector('input[name=fl]').value
+  $.get("http://localhost:8983/solr/corejouve/select?indent=on&q=" + q +'&fl='+fl+ "&wt=json", function (data) {
     var json = JSON.parse(data)
     var docs = json.response.docs
+    var isFinished = false
     docs.forEach(function (doc, index) {
       index++
+      // console.log(Object.keys(doc).length);
+      if (!isFinished) {
+        var thead = '<tr>'
+        for (var e in doc) {
+          thead = thead + '<th>' + e + '</th>'
+        }
+        thead = thead + '<th>Relevancy</th></tr>'
+        $('thead').append(thead)
+        isFinished = true
+      }
+
       var id = doc.id
       var name = doc.name_txt_en
       var des = doc.description_txt_en
       var note = '<div id="target' + index + '"></div><div id="hint' + index + '"></div>'
-      var tr = '<tr class="active"><th scope="row">' + index + '</th><td>' + id + '</td><td>' + name + '</td><td>' + des + '</td><td>' + note + '</td></tr>'
+      var tr = '<tr class="active">'
+      for (var e in doc) {
+        tr = tr + '<td>' + doc[e]+ '</td>'
+      }
+      tr = tr + '<td>'+note+'</td></tr>'
+
       $('tbody').append(tr)
       $('#target' + index).raty({
         cancelHint: 'none',
@@ -33,7 +52,6 @@ function search() {
         start: 0,
         number: 5,
         click: function (score, e) {
-          // alert(score-1)
           socket.emit('getNote', { id: id, name: name, score: score })
         },
         target: '#hint' + index,

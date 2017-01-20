@@ -54,7 +54,7 @@ io.sockets.on('connection', function (socket) {
   }
 
   socket.on('getNote', function (json) {
-    var val = json.id + '|' + json.name + '|' + json.score + '|HUMAN_JUDGEMENT\n';
+  var val = json.name + '|' + json.id + '|' + (parseInt(json.score)-1) + '|HUMAN_JUDGEMENT\n';
     map.set(json.id,val)
   });
 

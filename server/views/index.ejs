@@ -19,8 +19,14 @@
             <!--<label class="control-label" for="url">KeyWord(s): </label>-->
             <h5>KeyWord(s):</h5>
           </div>
-          <div class="col-xs-7">
+          <div class="col-xs-3">
             <input class="form-control" id="url" name="url" type="text" value="skirt">
+          </div>
+          <div class="col-xs-1">
+            <h5>fl:</h5>
+          </div>
+          <div class="col-xs-3">
+            <input class="form-control" id="fl" name="fl" type="text" value="name_txt_en,description_txt_en">
           </div>
           <div class="col-xs-4">
             <button id="search" type="button" class="btn btn-primary">Search</button>
@@ -31,17 +37,14 @@
       <hr/>
       <table class="table">
         <thead>
-          <tr>
-            <th>#</th>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Relevancy</th>
-          </tr>
         </thead>
         <tbody>
         </tbody>
       </table>
-    </div>
+      <hr>
+
+      <footer>
+        <p>&copy; 2016-2017 Company GenTrainingData, Inc.</p>
+      </footer>
     </div>
     <% include foot.ejs %>
