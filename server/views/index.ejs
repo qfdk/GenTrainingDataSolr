@@ -14,23 +14,21 @@
       </div>
 
       <div class="container">
-        <div class="row">
-          <div class="col-xs-1">
-            <!--<label class="control-label" for="url">KeyWord(s): </label>-->
-            <h5>KeyWord(s):</h5>
+        <div class="form-inline">
+          <div class="form-group">
+            <label for="url">Solr base url : </label>
+            <input type="text" class="form-control" id="url" value="http://localhost:8983/solr/corejouve">
           </div>
-          <div class="col-xs-3">
-            <input class="form-control" id="url" name="url" type="text" value="skirt">
+          <div class="form-group">
+            <label for="query">Query : </label>
+            <input type="text" class="form-control" id="query" value="skirt">
           </div>
-          <div class="col-xs-1">
-            <h5>fl:</h5>
+          <div class="form-group">
+            <label for="fl">fl : </label>
+            <input type="text" class="form-control" id="fl" value="id,name_txt_en,description_txt_en">
           </div>
-          <div class="col-xs-3">
-            <input class="form-control" id="fl" name="fl" type="text" value="name_txt_en,description_txt_en">
-          </div>
-          <div class="col-xs-4">
-            <button id="search" type="button" class="btn btn-primary">Search</button>
-            <a href="/download" role="button" class="btn btn-success">GenTrainingData</a> </div>
+          <button id="search" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+          <a href="/download" role="button" class="btn btn-success"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> GenTrainingData</a>
         </div>
       </div>
 

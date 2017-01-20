@@ -1,10 +1,21 @@
 var socket = io.connect("http://" + window.location['hostname'] + ":3000");
 
+$('#query').keyup(function (e) {
+  e.preventDefault()
+  if (e.keyCode == 13) {
+    search()
+  }
+});
 $('#url').keyup(function (e) {
   e.preventDefault()
   if (e.keyCode == 13) {
     search()
-    return false;
+  }
+});
+$('#fl').keyup(function (e) {
+  e.preventDefault()
+  if (e.keyCode == 13) {
+    search()
   }
 });
 
@@ -16,15 +27,15 @@ $('#search').on('click', function (e) {
 function search() {
   $('.table tbody tr').remove()
   $('.table thead tr').remove()
-  var q = document.querySelector('input[name=url]').value
-  var fl = document.querySelector('input[name=fl]').value
-  $.get("http://localhost:8983/solr/corejouve/select?indent=on&q=" + q +'&fl='+fl+ "&wt=json", function (data) {
+  var q = document.querySelector('input[id=query]').value
+  var fl = document.querySelector('input[id=fl]').value
+  var url = document.querySelector('input[id=url]').value
+  $.get(url+'/select?indent=on&q=' + q + '&fl=' + fl + "&wt=json", function (data) {
     var json = JSON.parse(data)
     var docs = json.response.docs
     var isFinished = false
     docs.forEach(function (doc, index) {
       index++
-      // console.log(Object.keys(doc).length);
       if (!isFinished) {
         var thead = '<tr>'
         for (var e in doc) {
@@ -34,17 +45,13 @@ function search() {
         $('thead').append(thead)
         isFinished = true
       }
-
-      var id = doc.id
       var name = doc.name_txt_en
-      var des = doc.description_txt_en
       var note = '<div id="target' + index + '"></div><div id="hint' + index + '"></div>'
       var tr = '<tr class="active">'
       for (var e in doc) {
-        tr = tr + '<td>' + doc[e]+ '</td>'
+        tr = tr + '<td>' + doc[e] + '</td>'
       }
-      tr = tr + '<td>'+note+'</td></tr>'
-
+      tr = tr + '<td>' + note + '</td></tr>'
       $('tbody').append(tr)
       $('#target' + index).raty({
         cancelHint: 'none',
@@ -52,7 +59,7 @@ function search() {
         start: 0,
         number: 5,
         click: function (score, e) {
-          socket.emit('getNote', { id: id, name: name, score: score })
+          socket.emit('getNote', { id:doc.id, name: name, score: score })
         },
         target: '#hint' + index,
         starOff: 'imgs/star-off.png',
