@@ -12,7 +12,7 @@ $('#url').keyup(function (e) {
     search()
   }
 });
-$('#param').keyup(function (e) {
+$('#otherParams').keyup(function (e) {
   e.preventDefault()
   if (e.keyCode == 13) {
     search()
@@ -62,7 +62,6 @@ function search() {
      var docs = json.response.docs
      var isFinished = false
      docs.forEach(function (doc, index) {
-
       index++
       if (!isFinished) {
         var thead = '<tr>'
@@ -86,7 +85,7 @@ function search() {
         start: 0,
         number: 5,
         click: function (score, e) {
-          socket.emit('getNote', { id:doc.id, name: q, score: score })
+          socket.emit('getNote', { id:doc.id, query: q, score: score })
         },
         target: '#hint' + index,
         starOff: 'imgs/star-off.png',
