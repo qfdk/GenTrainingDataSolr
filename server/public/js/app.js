@@ -59,7 +59,7 @@ function search() {
         start: 0,
         number: 5,
         click: function (score, e) {
-          socket.emit('getNote', { id:doc.id, name: name, score: score })
+          socket.emit('getNote', { id:doc.id, name: q, score: score })
         },
         target: '#hint' + index,
         starOff: 'imgs/star-off.png',

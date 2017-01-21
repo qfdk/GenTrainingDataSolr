@@ -52,10 +52,11 @@ io.sockets.on('connection', function (socket) {
   if (sockets.indexOf(socket) === -1) {
     sockets.push(socket);
   }
+  
 
   socket.on('getNote', function (json) {
     console.log(json);
-  var val = json.name + '|' + json.id + '|' + (parseInt(json.score)-1) + '|HUMAN_JUDGEMENT\n';
+    var val = json.name+ '|' + json.id + '|' + (parseInt(json.score)-1) + '|HUMAN_JUDGEMENT\n';
     map.set(json.id,val)
   });
 
