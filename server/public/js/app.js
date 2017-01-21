@@ -12,6 +12,12 @@ $('#url').keyup(function (e) {
     search()
   }
 });
+$('#param').keyup(function (e) {
+  e.preventDefault()
+  if (e.keyCode == 13) {
+    search()
+  }
+});
 $('#fl').keyup(function (e) {
   e.preventDefault()
   if (e.keyCode == 13) {
@@ -23,14 +29,21 @@ $('#search').on('click', function (e) {
   e.preventDefault()
   search()
 })
-
+$('#query').on('keyup', function (e) {
+  var q = document.querySelector('input[id=query]').value
+  if (q.indexOf('&') !== -1) {
+    alert('Cant be used here!')
+  }
+})
 function search() {
   $('.table tbody tr').remove()
   $('.table thead tr').remove()
   var q = document.querySelector('input[id=query]').value
   var fl = document.querySelector('input[id=fl]').value
   var url = document.querySelector('input[id=url]').value
-  $.get(url+'/select?indent=on&q=' + q + '&fl=' + fl + "&wt=json", function (data) {
+  var param = document.querySelector('input[id=param]').value
+
+  $.get(url + '/select?indent=on&q=' + q + '&fl=' + fl + param+'&wt=json', function (data) {
     var json = JSON.parse(data)
     var docs = json.response.docs
     var isFinished = false
@@ -45,7 +58,6 @@ function search() {
         $('thead').append(thead)
         isFinished = true
       }
-      var name = doc.name_txt_en
       var note = '<div id="target' + index + '"></div><div id="hint' + index + '"></div>'
       var tr = '<tr class="active">'
       for (var e in doc) {
@@ -59,7 +71,7 @@ function search() {
         start: 0,
         number: 5,
         click: function (score, e) {
-          socket.emit('getNote', { id:doc.id, name: name, score: score })
+          socket.emit('getNote', { id: doc.id, name: q, score: score })
         },
         target: '#hint' + index,
         starOff: 'imgs/star-off.png',
