@@ -12,6 +12,12 @@ $('#url').keyup(function (e) {
     search()
   }
 });
+$('#param').keyup(function (e) {
+  e.preventDefault()
+  if (e.keyCode == 13) {
+    search()
+  }
+});
 $('#fl').keyup(function (e) {
   e.preventDefault()
   if (e.keyCode == 13) {
@@ -23,7 +29,12 @@ $('#search').on('click', function (e) {
   e.preventDefault()
   search()
 })
-
+$('#query').on('keyup', function (e) {
+  var q = document.querySelector('input[id=query]').value
+  if (q.indexOf('&') !== -1) {
+    alert('Cant be used here!')
+  }
+})
 function search() {
   $('.table tbody tr').remove()
   $('.table thead tr').remove()
@@ -31,6 +42,7 @@ function search() {
   var fl = document.querySelector('input[id=fl]').value
   var otherParams = document.querySelector('input[id=otherParams]').value
   var url = document.querySelector('input[id=url]').value
+
   //check query does not contain &.*
   if(q.indexOf('&') != -1){
     alert ("The query must only contain key words for your search");
@@ -50,6 +62,7 @@ function search() {
      var docs = json.response.docs
      var isFinished = false
      docs.forEach(function (doc, index) {
+
       index++
       if (!isFinished) {
         var thead = '<tr>'
@@ -60,7 +73,6 @@ function search() {
         $('thead').append(thead)
         isFinished = true
       }
-      var name = doc.name_txt_en
       var note = '<div id="target' + index + '"></div><div id="hint' + index + '"></div>'
       var tr = '<tr class="active">'
       for (var e in doc) {
@@ -74,7 +86,11 @@ function search() {
         start: 0,
         number: 5,
         click: function (score, e) {
+<<<<<<< HEAD
           socket.emit('getNote', { id:doc.id, name: q, score: score })
+=======
+          socket.emit('getNote', { id: doc.id, name: q, score: score })
+>>>>>>> 7ddfdb419a3284376b26df2306763c47fe3976e5
         },
         target: '#hint' + index,
         starOff: 'imgs/star-off.png',
