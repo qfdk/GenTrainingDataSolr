@@ -86,11 +86,7 @@ function search() {
         start: 0,
         number: 5,
         click: function (score, e) {
-<<<<<<< HEAD
           socket.emit('getNote', { id:doc.id, name: q, score: score })
-=======
-          socket.emit('getNote', { id: doc.id, name: q, score: score })
->>>>>>> 7ddfdb419a3284376b26df2306763c47fe3976e5
         },
         target: '#hint' + index,
         starOff: 'imgs/star-off.png',
