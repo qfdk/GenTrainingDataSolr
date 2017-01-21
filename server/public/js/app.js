@@ -29,12 +29,27 @@ function search() {
   $('.table thead tr').remove()
   var q = document.querySelector('input[id=query]').value
   var fl = document.querySelector('input[id=fl]').value
+  var otherParams = document.querySelector('input[id=otherParams]').value
   var url = document.querySelector('input[id=url]').value
-  $.get(url+'/select?indent=on&q=' + q + '&fl=' + fl + "&wt=json", function (data) {
-    var json = JSON.parse(data)
-    var docs = json.response.docs
-    var isFinished = false
-    docs.forEach(function (doc, index) {
+  //check query does not contain &.*
+  if(q.indexOf('&') != -1){
+    alert ("The query must only contain key words for your search");
+    return;
+  }
+  if(otherParams.length!=0 &&  otherParams.indexOf("&")==-1){
+   alert("the other parameters must contain a &, like '&sort=id ASC' for example");
+   return;
+  }
+  if(otherParams.indexOf("&q=")!=-1){
+   alert("the other parameters must not contain a query, put it in the q field");
+   return;
+  } 
+ 
+  $.get(url+'/select?indent=on&q=' + q + otherParams+ '&fl=' + fl + "&wt=json", function (data) {
+     var json = JSON.parse(data)
+     var docs = json.response.docs
+     var isFinished = false
+     docs.forEach(function (doc, index) {
       index++
       if (!isFinished) {
         var thead = '<tr>'
@@ -65,6 +80,6 @@ function search() {
         starOff: 'imgs/star-off.png',
         starOn: 'imgs/star-on.png'
       })
-    }, this);
+     }, this);
   })
 }
