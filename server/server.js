@@ -31,6 +31,10 @@ app.get('/', function (req, res) {
   res.render('index')
 })
 
+app.get('/compare', function (req, res) {
+  res.render('compare')
+})
+
 app.get('/download', function (req, res) {
   var tmp = [];
   map.forEach(function(v,k){
