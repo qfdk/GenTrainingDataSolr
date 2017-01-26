@@ -38,8 +38,9 @@ Add this code in `server/solr-webapp/webapp/WEB-INF/web.xml`
 ## Quick start
 
 ```bash
+cd server
 npm install
-npm run
+npm start
 ```
 
 ![](./imgs/1.png)
