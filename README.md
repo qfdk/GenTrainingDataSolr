@@ -1,5 +1,14 @@
 # GenTrainingDataSolr
 
+## Quick start
+
+```bash
+cd server
+npm install
+npm start
+```
+![](./imgs/1.png)
+
 ## Enable CORS in Apache Solr
 
 Add this code in `server/solr-webapp/webapp/WEB-INF/web.xml`
@@ -33,14 +42,3 @@ Add this code in `server/solr-webapp/webapp/WEB-INF/web.xml`
   <filter-name>cross-origin</filter-name>
   <url-pattern>/*</url-pattern>
 </filter-mapping>
-```
-
-## Quick start
-
-```bash
-cd server
-npm install
-npm start
-```
-
-![](./imgs/1.png)

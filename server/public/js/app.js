@@ -29,39 +29,50 @@ $('#search').on('click', function (e) {
   e.preventDefault()
   search()
 })
+
 $('#query').on('keyup', function (e) {
   var q = document.querySelector('input[id=query]').value
   if (q.indexOf('&') !== -1) {
     alert('Cant be used here!')
   }
 })
+
+$('#compare').on('click', function (e) {
+  e.preventDefault()
+  compare()
+})
+
+/**
+ * serach
+ */
 function search() {
   $('.table tbody tr').remove()
   $('.table thead tr').remove()
+
   var q = document.querySelector('input[id=query]').value
   var fl = document.querySelector('input[id=fl]').value
   var otherParams = document.querySelector('input[id=otherParams]').value
   var url = document.querySelector('input[id=url]').value
 
   //check query does not contain &.*
-  if(q.indexOf('&') != -1){
-    alert ("The query must only contain key words for your search");
+  if (q.indexOf('&') != -1) {
+    alert("The query must only contain key words for your search");
     return;
   }
-  if(otherParams.length!=0 &&  otherParams.indexOf("&")==-1){
-   alert("the other parameters must contain a &, like '&sort=id ASC' for example");
-   return;
+  if (otherParams.length != 0 && otherParams.indexOf("&") == -1) {
+    alert("the other parameters must contain a &, like '&sort=id ASC' for example");
+    return;
   }
-  if(otherParams.indexOf("&q=")!=-1){
-   alert("the other parameters must not contain a query, put it in the q field");
-   return;
-  } 
- 
-  $.get(url+'/select?indent=on&q=' + q + otherParams+ '&fl=' + fl + "&wt=json", function (data) {
-     var json = JSON.parse(data)
-     var docs = json.response.docs
-     var isFinished = false
-     docs.forEach(function (doc, index) {
+  if (otherParams.indexOf("&q=") != -1) {
+    alert("the other parameters must not contain a query, put it in the q field");
+    return;
+  }
+
+  $.get(url + '/select?indent=on&q=' + q + otherParams + '&fl=' + fl + "&wt=json", function (data) {
+    var json = JSON.parse(data)
+    var docs = json.response.docs
+    var isFinished = false
+    docs.forEach(function (doc, index) {
       index++
       if (!isFinished) {
         var thead = '<tr>'
@@ -85,12 +96,56 @@ function search() {
         start: 0,
         number: 5,
         click: function (score, e) {
-          socket.emit('getNote', { id:doc.id, query: q, score: score })
+          socket.emit('getNote', { id: doc.id, query: q, score: score })
         },
         target: '#hint' + index,
         starOff: 'imgs/star-off.png',
         starOn: 'imgs/star-on.png'
       })
-     }, this);
+    }, this);
+  })
+}
+
+/**
+ * compare
+ */
+function compare() {
+  // remove all table
+  $('.table tbody tr').remove()
+  $('.table thead tr').remove()
+
+  var q = document.querySelector('input[id=query]').value
+  var fl = document.querySelector('input[id=fl]').value
+  var rq = document.querySelector('input[id=rq]').value
+  var url = document.querySelector('input[id=url]').value
+
+  // http://localhost:8983/solr/corejouve/query?q=skirt&rq={!ltr%20model=jouvemodel%20reRankDocs=5}&fl=id,score,name_txt_en,[features]
+  $.get(url + '/query?indent=on&q=' + q + '&rq=' + rq + '&fl=' + fl + "&wt=json", function (data) {
+    var json = JSON.parse(data)
+    var docs = json.response.docs
+    console.log(docs);
+    var isFinished = false
+
+    docs.forEach(function (doc, index) {
+      index++
+      if (!isFinished) {
+        var thead = '<tr>'
+        for (var e in doc) {
+          thead = thead + '<th>' + e + '</th>'
+        }
+        thead = thead + '</tr>'
+        $('thead').append(thead)
+        isFinished = true
+      }
+
+      var tr = '<tr class="active">'
+      for (var e in doc) {
+        tr = tr + '<td>' + doc[e] + '</td>'
+      }
+      tr = tr + '</tr>'
+
+      $('#ltr').append(tr)
+
+    }, this);
   })
 }
