@@ -42,4 +42,3 @@ Add this code in `server/solr-webapp/webapp/WEB-INF/web.xml`
   <filter-name>cross-origin</filter-name>
   <url-pattern>/*</url-pattern>
 </filter-mapping>
-```
