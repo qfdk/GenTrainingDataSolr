@@ -128,12 +128,23 @@ function compare() {
     docs.forEach(function (doc, index) {
       index++
       if (!isFinished) {
-        var thead = '<tr>'
+
+        var thead_ltr = '<tr>'
         for (var e in doc) {
-          thead = thead + '<th>' + e + '</th>'
+          thead_ltr = thead_ltr + '<th>' + e + '</th>'
         }
-        thead = thead + '</tr>'
-        $('thead').append(thead)
+        thead_ltr = thead_ltr + '</tr>'
+        $('#thead_ltr').append(thead_ltr)
+
+        var thead_solr = '<tr>'
+        for (var e in doc) {
+          if (e !== '[features]') {
+            thead_solr = thead_solr + '<th>' + e + '</th>'
+
+          }
+        }
+        thead_solr = thead_solr + '</tr>'
+        $('#thead_solr').append(thead_solr)
         isFinished = true
       }
 
