@@ -120,10 +120,9 @@ function compare() {
   var url = document.querySelector('input[id=url]').value
 
   // http://localhost:8983/solr/corejouve/query?q=skirt&rq={!ltr%20model=jouvemodel%20reRankDocs=5}&fl=id,score,name_txt_en,[features]
-  $.get(url + '/query?indent=on&q=' + q + '&rq=' + rq + '&fl=' + fl + "&wt=json", function (data) {
+  $.get(url + '/query?indent=on&q=' + q + '&rq=' + rq + '&fl=' + fl + "&wt=json&rows=100", function (data) {
     var json = JSON.parse(data)
     var docs = json.response.docs
-    console.log(docs);
     var isFinished = false
 
     docs.forEach(function (doc, index) {
@@ -138,14 +137,30 @@ function compare() {
         isFinished = true
       }
 
-      var tr = '<tr class="active">'
+      var ltr = '<tr class="active">'
       for (var e in doc) {
-        tr = tr + '<td>' + doc[e] + '</td>'
+        ltr = ltr + '<td>' + doc[e] + '</td>'
       }
-      tr = tr + '</tr>'
+      ltr = ltr + '</tr>'
+      $('#ltr').append(ltr)
 
-      $('#ltr').append(tr)
+      // todo 
+      // sort with map
+      var solr = '<tr class="active">'
+      feature = doc['[features]']
+      orignalScore = feature.split(',')[0].split('=')[1]
+      for (var e in doc) {
+        if (e !== '[features]') {
+          if (e === 'score') {
+            solr = solr + '<td>' + orignalScore + '</td>'
+          } else {
+            solr = solr + '<td>' + doc[e] + '</td>'
+          }
+        }
+      }
+      solr = solr + '</tr>'
 
+      $('#solr').append(solr)
     }, this);
   })
 }
