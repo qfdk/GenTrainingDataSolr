@@ -36,7 +36,7 @@
     </modal>
     <hr>
     <p class="alert alert-success">{{url}}/select?indent=on&q={{query}}&fl={{fl}}{{otherparams}}&wt=json</p>
-    <p class="alert alert-warning text-center" v-show="!isFinish">No resultat</p>
+    <p class="alert alert-warning text-center" v-show="!isFinish">No result found</p>
     <table class="table" v-show="isFinish">
       <thead>
         <th v-for="column in columns">{{column}}</th>

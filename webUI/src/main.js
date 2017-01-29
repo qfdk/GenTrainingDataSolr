@@ -1,14 +1,45 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import vueResource from 'vue-resource'
-import App from './App'
+// import App from './App'
 
-Vue.use(vueResource)
+import VueResource from 'vue-resource'
+import VueRouter from 'vue-router'
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  template: '<App/>',
-  components: { App }
+import Index from './components/Index'
+import Compare from './components/Compare'
+
+import top from './components/Header'
+import jumbotron from './components/Jumbotron'
+import bot from './components/Footer'
+
+Vue.use(VueResource)
+Vue.use(VueRouter)
+
+var router = new VueRouter({
+  mode: 'history',
+  base: __dirname,
+  routes: [
+      {path: '/', component: Index},
+      {path: '/compare', component: Compare}
+  ]
 })
+
+// /* eslint-disable no-new */
+new Vue({
+  router,
+  components: {
+    top,
+    jumbotron,
+    Compare,
+    Index,
+    bot
+  },
+  template: `
+    <div class="container" id="app">
+      <top></top>
+      <router-view></router-view>
+      <bot></bot>
+    </div>
+  `
+}).$mount('#app')

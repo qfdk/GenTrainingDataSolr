@@ -1,18 +1,18 @@
 <template lang="html">
   <div class="index">
-    <jumbotron isShow=true msg="GenTrainingDataSolr"></jumbotron>
-    <gendata></gendata>
+    <jumbotron :isShow=false msg="Compare"></jumbotron>
+    <ltr></ltr>
   </div>
 </template>
 
 <script>
 import jumbotron from './Jumbotron'
-import gendata from './Gendata'
+import ltr from './Ltr'
 export default {
   name:'index',
   components: {
     jumbotron,
-    gendata
+    ltr
   },
   data(){
     return {

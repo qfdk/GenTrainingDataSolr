@@ -25,13 +25,12 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
       <ul class="nav navbar-nav">
-        <li><a href="/">Index</a></li>
-        <li><a href="/compare">Compare</a></li>
+        <li><router-link :to="{ path: '/' }">Home</router-link></li>
+        <li><router-link :to="{ path: '/compare' }">Compare</router-link></li>
       </ul>
     </div>
     <!-- /.navbar-collapse -->
   </nav>
-
 </div>
 </template>
 
