@@ -2,24 +2,28 @@
   <div class="star-rating">
     <label v-for="rating in ratings"
     :class="['star-rating__star',{'is-selected': ((val >= rating) && val != null), 'is-disabled': disabled}]"
-    @mouseover="starOver(rating)" @mouseout="starOut" @click="setVal(rating)">
+    @mouseover="starOver(rating)" @mouseout="starOut">
     <input
     class="star-rating star-rating__checkbox"
     type="radio"
-    :name='name' :value='rating' :required='required' :id='id' :disabled='disabled'>
+    :name='name' :value='rating' :required='required' :id='id' :disabled='disabled'  @click="setVal(rating)">
     ★
   </label>
 </div>
 </template>
 
 <script>
+
+import Store from 'src/storage'
+
 export default {
   name:'star',
   data: function() {
     return {
       val: null,
       temp_value: null,
-      ratings: [0,1, 2, 3, 4]
+      ratings: [0,1, 2, 3, 4],
+      items:[]
     };
   },
   computed:{
@@ -40,24 +44,57 @@ export default {
   methods: {
     starOver: function(index) {
       if (this.disabled) {
-        return;
+        return
       }
-      this.temp_value = this.val;
-      this.val = index;
+      this.temp_value = this.val
+      this.val = index
     },
     starOut: function() {
       if (this.disabled) {
-        return;
+        return
       }
-      this.val = this.temp_value;
+      this.val = this.temp_value
     },
     setVal: function(value) {
       if (this.disabled) {
-        return;
+        return
       }
-      this.temp_value = value;
-      this.val = value;
-      console.log(this.id+'|'+this.query+'|'+this.val)
+      this.temp_value = value
+      this.val = value
+      this.items=Store.fetch()
+      if(!this.find(this.id))
+      {
+        this.items.push(
+          {
+            key:this.id,
+            val:this.query+'|'+this.id+'|'+this.val+'|HUMAN_JUDGEMENT\n'
+          }
+        )
+        Store.save(this.items)
+      }else {
+        var key=this.id
+        var val = this.query+'|'+this.id+'|'+this.val+'|HUMAN_JUDGEMENT\n'
+        this.modifier(key,val)
+      }
+    },
+    modifier:function(key,val){
+      this.items.forEach(function (e) {
+        if (e.key === key) {
+          e.val = val
+        }
+      }, this)
+      Store.save(this.items)
+    },
+    find:function(key)
+    {
+      var tmp=false
+      this.items.forEach(function(item,index){
+        if(item.key===key)
+        {
+          tmp=true
+        }
+      },this)
+      return tmp
     }
   }
 }

@@ -28,14 +28,12 @@
           GenTrainingDataSolr
         </h4>
       </div>
-      <textarea class="form-control">{{docs}}</textarea>
-      <!-- <div class="textarea" contenteditable="true">{{docs}}</div> -->
+      <textarea class="form-control">{{gen}}</textarea>
       <!-- custom buttons -->
       <div slot="modal-footer" class="modal-footer">
         <button type="button" class="btn btn-danger" @click="showModal = false">Close</button>
       </div>
     </modal>
-
     <hr>
     <p class="alert alert-success">{{url}}/select?indent=on&q={{query}}&fl={{fl}}{{otherparams}}&wt=json</p>
     <p class="alert alert-warning text-center" v-show="!isFinish">No resultat</p>
@@ -48,7 +46,7 @@
         <tr v-for="item in docs">
           <td v-for="(k, v) in item" v-text="k"></td>
           <td>
-            <star :id="item.id" :query="query"/>
+            <star :id="item.id" :query="query" :disabled="false"/>
           </td>
         </tr>
       </tbody>
@@ -75,6 +73,7 @@ export default {
       fl:'id,name_txt_en,description_txt_en',
       otherparams:'&rows=20',
       docs:'',
+      gen:'',
       columns:'',
       isFinish:false,
       showModal:false,
@@ -88,6 +87,8 @@ export default {
 
   methods: {
     search(){
+      window.localStorage.setItem("ltr","")
+      this.docs=[]
       var fullUrl=this.url+'/select?indent=on&q='+this.query+'&fl='+this.fl+this.otherparams+'&wt=json';
       this.$http.get(fullUrl).then((data) => {
         var json = JSON.parse(data.body).response
@@ -103,7 +104,8 @@ export default {
           }
         }
       }, (error) => {
-        alert(error)
+        this.showModal=true
+        this.gen="Something was wrong ... Try to start your Apache solr."
       })
     },
     addNote(n)
@@ -113,6 +115,11 @@ export default {
     modal()
     {
       this.showModal=true
+      var tmp=''
+      JSON.parse(window.localStorage.getItem("ltr") || '[]').forEach(function(item,index){
+        tmp+=item.val
+      },this)
+      this.gen=tmp
     }
   }
 }
@@ -120,8 +127,8 @@ export default {
 
 <style>
 textarea{
-    min-height: 345px;
-    border-color: rgba(82, 168, 236, 0.8);
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+  min-height: 345px;
+  border-color: rgba(82, 168, 236, 0.8);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
 }
 </style>
