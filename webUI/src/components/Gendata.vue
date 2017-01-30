@@ -72,19 +72,14 @@ export default {
       query:'skirt',
       fl:'id,name_txt_en,description_txt_en',
       otherparams:'&rows=20',
-      docs:'',
+      docs:[],
       gen:'',
-      columns:'',
+      columns:[],
       isFinish:false,
       showModal:false,
       notes:['Not relevant', 'Fair', 'Good', 'Excellent', 'Perfect']
     }
   },
-
-  created(){
-    //On Component created
-  },
-
   methods: {
     search(){
       window.localStorage.setItem("ltr","")

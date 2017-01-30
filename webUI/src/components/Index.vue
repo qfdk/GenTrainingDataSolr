@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="index">
-    <jumbotron isShow=true msg="GenTrainingDataSolr"></jumbotron>
+    <jumbotron :isShow="true" msg="GenTrainingDataSolr"></jumbotron>
     <gendata></gendata>
   </div>
 </template>

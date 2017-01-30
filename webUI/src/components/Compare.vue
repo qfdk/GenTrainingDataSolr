@@ -1,6 +1,6 @@
 <template lang="html">
-  <div class="index">
-    <jumbotron :isShow=false msg="Compare"></jumbotron>
+  <div class="compare">
+    <jumbotron :isShow="false" msg="Compare"></jumbotron>
     <ltr></ltr>
   </div>
 </template>
@@ -9,7 +9,7 @@
 import jumbotron from './Jumbotron'
 import ltr from './Ltr'
 export default {
-  name:'index',
+  name:'compare',
   components: {
     jumbotron,
     ltr
