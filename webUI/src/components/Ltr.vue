@@ -22,20 +22,23 @@
       </div>
     </div>
     <hr>
+    <!-- <test :columns="columns" :data="docs" :sort-column="columns"></test> -->
     <p class="alert alert-warning text-center" v-show="!isFinish">No result found</p>
     <div class="row" v-show="isFinish">
       <div class="col-xs-5">
         <h4> <span class="label label-success">Apache Solr</span></h4>
-      <mytable
+        <v-client-table :data="solr" :columns="columns_solr" :options="options"></v-client-table>
+      <!-- <mytable
         :data="solr"
-        :columns="columns_solr"></mytable>
+        :columns="columns_solr"></mytable> -->
       </div>
 
       <div class="col-xs-7">
         <h4> <span class="label label-info">Apache Solr with LTR</span></h4>
-        <mytable
+        <!-- <mytable
         :data="docs"
-        :columns="columns"></mytable>
+        :columns="columns"></mytable> -->
+        <v-client-table :data="docs" :columns="columns" :options="options"></v-client-table>
       </div>
     </div>
   </div>
@@ -43,7 +46,7 @@
 
 <script>
 import mytable from './MyTable'
-
+// import test from './Test'
 export default {
   name: "ltr",
   data(){
@@ -56,7 +59,10 @@ export default {
       docs:[],
       columns:[],
       columns_solr:[],
-      isFinish:false
+      isFinish:false,
+      options:{
+        filterable:false
+      }
     }
   },
   components:{

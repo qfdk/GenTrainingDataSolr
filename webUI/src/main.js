@@ -5,6 +5,7 @@ import Vue from 'vue'
 
 import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
+import {ClientTable} from 'vue-tables-2'
 
 import Index from './components/Index'
 import Compare from './components/Compare'
@@ -15,6 +16,7 @@ import bot from './components/Footer'
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
+Vue.use(ClientTable)
 
 var router = new VueRouter({
   mode: 'history',

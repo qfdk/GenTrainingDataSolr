@@ -35,6 +35,11 @@ module.exports = {
   module: {
     loaders: [
       {
+        test: /\.jsx?$/,
+        loader: 'babel',
+        exclude: /node_modules(?!\/(vue-tables-2|vue-pagination-2))/
+      },
+      {
         test: /\.vue$/,
         loader: 'vue'
       },
