@@ -3,7 +3,8 @@
 ## Quick start
 
 ```bash
-cd webUI
+cd web
+npm install
 npm run dev
 ```
 ![](./imgs/1.png)
@@ -11,6 +12,36 @@ npm run dev
 Using traing Data in your `query.txt`, run `traing_data.py` then enjoy :)
 For more detail [Bloomberg LTR](https://github.com/bloomberg/lucene-solr)
 ![](./imgs/2.png)
+
+## Production
+
+```bash
+cd web
+npm install
+npm run build
+cd dist
+cp -r * /home/wwwroot/your.domaine
+```
+
+### Apache
+
+```c
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+```
+### nginx
+
+```c
+location / {
+  try_files $uri $uri/ /index.html;
+}
+```
 
 ## Enable CORS in Apache Solr
 
