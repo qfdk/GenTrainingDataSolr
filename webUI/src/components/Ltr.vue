@@ -11,12 +11,19 @@
           <input  @blur="search" @keyup.enter="search" type="text" class="form-control" v-model:value="query">
         </div>
         <div class="form-group">
-          <label for="rq">rq : </label>
-          <input  @blur="search" @keyup.enter="search" type="text" class="form-control" v-model:value="rq">
-        </div>
-        <div class="form-group">
           <label for="fl">fl : </label>
           <input  @blur="search" @keyup.enter="search" type="text" class="form-control" v-model:value="fl">
+        </div>
+      </div>
+      <br>
+      <div class="form-inline">
+        <div class="form-group">
+          <label for="model">model : </label>
+          <input  @blur="search" @keyup.enter="search" type="text" class="form-control" v-model:value="model">
+        </div>
+        <div class="form-group">
+          <label for="reRankDocs">reRankDocs : </label>
+          <input  @blur="search" @keyup.enter="search" type="number" class="form-control" v-model:value="reRankDocs">
         </div>
         <button @click="search" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span> Compare</button>
       </div>
@@ -28,7 +35,7 @@
       <div class="col-xs-5">
         <h4> <span class="label label-success">Apache Solr</span></h4>
         <v-client-table :data="solr" :columns="columns_solr" :options="options"></v-client-table>
-      <!-- <mytable
+        <!-- <mytable
         :data="solr"
         :columns="columns_solr"></mytable> -->
       </div>
@@ -46,29 +53,42 @@
 
 <script>
 import mytable from './MyTable'
-// import test from './Test'
 export default {
   name: "ltr",
   data(){
     return {
       url:'http://localhost:8983/solr/corejouve',
       query:'skirt',
-      rq:'{!ltr model=jouvemodel reRankDocs=5}',
+      model:'jouvemodel',
       fl:'score,name_txt_en,[features]',
+      reRankDocs:'5',
       solr:[],
       docs:[],
       columns:[],
       columns_solr:[],
       isFinish:false,
       options:{
-        filterable:false
+        filterable:false,
+        childRowKey:'id'
       }
     }
   },
   components:{
     mytable
   },
+  computed:{
+    rq:function()
+    {
+      return '{!ltr model='+this.model+' reRankDocs='+this.reRankDocs+'}'
+    }
+  },
   methods: {
+    sortByKey(array, key){
+      return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      });
+    },
     search(){
       this.docs=[]
       this.solr=[]
@@ -84,6 +104,10 @@ export default {
           if(this.docs.length>0)
           {
             this.columns=Object.keys(this.docs[0])
+            this.columns.unshift('_num')
+            this.docs.forEach(function(e,index){
+              e['_num']=index+1
+            },this)
             // copy array !!!
             this.solr=JSON.parse(JSON.stringify(json.docs));
             this.columns.forEach(function(e){
@@ -92,11 +116,19 @@ export default {
                 this.columns_solr.push(e)
               }
             },this);
-            this.solr.forEach(function(e,index){
+
+            this.solr.forEach(function(e){
               var feature = e['[features]']
               var orignalScore = feature.split(',')[0].split('=')[1]
               e['score']=orignalScore
             },this)
+
+            this.sortByKey(this.solr,'socre')
+
+            this.solr.forEach(function(e,index){
+              e['_num']=index+1
+            },this)
+
             this.isFinish=true
           }else{
             this.isFinish=false
