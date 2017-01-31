@@ -1,33 +1,38 @@
 <template>
   <div class="ltr">
-    <div class="container">
-      <div class="form-inline">
-        <div class="form-group">
-          <label for="url">Solr url : </label>
-          <input  @blur="search" @keyup.enter="search" type="text" class="form-control" id="url" v-model:value="url">
+    <div class="form-horizontal">
+
+      <div class="form-group">
+        <label class="col-sm-1 control-label" for="url">Solr url : </label>
+        <div class="col-sm-3">
+          <input  @keyup.enter="search" type="text" class="form-control" id="url" v-model:value="url">
         </div>
-        <div class="form-group">
-          <label for="query">Query : </label>
-          <input  @blur="search" @keyup.enter="search" type="text" class="form-control" v-model:value="query">
+        <label class="col-sm-1 control-label" for="query">Query : </label>
+        <div class="col-sm-3">
+          <input  @keyup.enter="search" type="text" class="form-control" v-model:value="query">
         </div>
-        <div class="form-group">
-          <label for="fl">fl : </label>
-          <input  @blur="search" @keyup.enter="search" type="text" class="form-control" v-model:value="fl">
+        <label class="col-sm-1 control-label" for="fl">fl : </label>
+        <div class="col-sm-3">
+          <input  @keyup.enter="search" type="text" class="form-control" v-model:value="fl">
         </div>
       </div>
-      <br>
-      <div class="form-inline">
-        <div class="form-group">
-          <label for="model">model : </label>
-          <input  @blur="search" @keyup.enter="search" type="text" class="form-control" v-model:value="model">
+
+      <div class="form-group">
+        <label class="col-sm-1 control-label" for="model">model : </label>
+        <div class="col-sm-3">
+          <input  @keyup.enter="search" type="text" class="form-control" v-model:value="model">
         </div>
-        <div class="form-group">
-          <label for="reRankDocs">reRankDocs : </label>
-          <input  @blur="search" @keyup.enter="search" type="number" class="form-control" v-model:value="reRankDocs">
+        <label class="col-sm-1 control-label" for="reRankDocs">RankDocs: </label>
+        <div class="col-sm-3">
+          <input @keyup.enter="search" type="number" class="form-control" v-model:value="reRankDocs">
         </div>
-        <button @click="search" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span> Compare</button>
+        <label class="col-sm-1 control-label" for="search"><span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> :</label>
+        <div class="col-sm-3">
+          <button @click="search" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span> Compare</button>
+        </div>
       </div>
     </div>
+
     <hr>
     <!-- <test :columns="columns" :data="docs" :sort-column="columns"></test> -->
     <p class="alert alert-warning text-center" v-show="!isFinish">No result found</p>
@@ -35,16 +40,10 @@
       <div class="col-xs-5">
         <h4> <span class="label label-success">Apache Solr</span></h4>
         <v-client-table :data="solr" :columns="columns_solr" :options="options"></v-client-table>
-        <!-- <mytable
-        :data="solr"
-        :columns="columns_solr"></mytable> -->
       </div>
 
       <div class="col-xs-7">
         <h4> <span class="label label-info">Apache Solr with LTR</span></h4>
-        <!-- <mytable
-        :data="docs"
-        :columns="columns"></mytable> -->
         <v-client-table :data="docs" :columns="columns" :options="options"></v-client-table>
       </div>
     </div>
@@ -52,7 +51,6 @@
 </template>
 
 <script>
-import mytable from './MyTable'
 export default {
   name: "ltr",
   data(){
@@ -72,9 +70,6 @@ export default {
         childRowKey:'id'
       }
     }
-  },
-  components:{
-    mytable
   },
   computed:{
     rq:function()
@@ -100,16 +95,16 @@ export default {
         var json = JSON.parse(data.body).response
         if('undefined'!==json.docs)
         {
-          this.docs = json.docs
+          this.docs = json.docs.slice(0,this.reRankDocs)
           if(this.docs.length>0)
           {
             this.columns=Object.keys(this.docs[0])
-            this.columns.unshift('_num')
+            this.columns.unshift('No.')
             this.docs.forEach(function(e,index){
-              e['_num']=index+1
+              e['No.']=index+1
             },this)
             // copy array !!!
-            this.solr=JSON.parse(JSON.stringify(json.docs));
+            this.solr=JSON.parse(JSON.stringify(this.docs));
             this.columns.forEach(function(e){
               if(e!=='[features]')
               {
@@ -126,7 +121,7 @@ export default {
             this.sortByKey(this.solr,'socre')
 
             this.solr.forEach(function(e,index){
-              e['_num']=index+1
+              e['No.']=index+1
             },this)
 
             this.isFinish=true
@@ -144,5 +139,7 @@ export default {
 </script>
 
 <style>
-
+.VueTables__sortable {
+  cursor: pointer;
+}
 </style>

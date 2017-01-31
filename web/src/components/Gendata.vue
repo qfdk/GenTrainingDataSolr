@@ -3,19 +3,19 @@
     <div class="form-inline">
       <div class="form-group">
         <label for="url">Solr url : </label>
-        <input type="text" class="form-control" id="url" v-model:value='url' @blur="search" @keyup.enter="search">
+        <input type="text" class="form-control" id="url" v-model:value='url' @keyup.enter="search">
       </div>
       <div class="form-group">
         <label for="query">Query : </label>
-        <input type="text" class="form-control" id="query" v-model:value="query" @blur="search" @keyup.enter="search">
+        <input type="text" class="form-control" id="query" v-model:value="query" @keyup.enter="search">
       </div>
       <div class="form-group">
         <label for="fl">fl : </label>
-        <input type="text" class="form-control" id="fl" v-model:value="fl" @blur="search" @keyup.enter="search">
+        <input type="text" class="form-control" id="fl" v-model:value="fl" @keyup.enter="search">
       </div>
       <div class="form-group">
         <label for="otherParams">Others : </label>
-        <input type="text" class="form-control" id="otherParams" v-model:value="otherparams" @blur="search" @keyup.enter="search">
+        <input type="text" class="form-control" id="otherParams" v-model:value="otherparams" @keyup.enter="search">
       </div>
       <button @click="search" @keyup.enter="search" id="search" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
       <button @click="modal" class="btn btn-success"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> Generate</button>
@@ -34,7 +34,7 @@
         <button type="button" class="btn btn-danger" @click="showModal = false">Close</button>
       </div>
     </modal>
-    
+
     <hr>
     <p class="alert alert-success">{{url}}/select?indent=on&q={{query}}&fl={{fl}}{{otherparams}}&wt=json</p>
     <p class="alert alert-warning text-center" v-show="!isFinish">No result found</p>
