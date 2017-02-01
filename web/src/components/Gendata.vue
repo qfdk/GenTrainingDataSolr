@@ -3,7 +3,7 @@
     <div class="form-inline">
       <div class="form-group">
         <label for="url">Solr url : </label>
-        <input type="text" class="form-control" id="url" v-model:value='url' @input="setUrl(url)" @keyup.enter="search">
+        <input type="text" class="form-control" id="url" v-model:value='url' @input="setUrl" @keyup.enter="search">
       </div>
       <div class="form-group">
         <label for="query">Query : </label>
@@ -82,12 +82,13 @@ export default {
     }
   },
   methods: {
-    setUrl(url)
+    setUrl()
     {
-      window.localStorage.setItem('ltr_url',url)
+      window.localStorage.setItem('ltr_url',this.url)
     },
     search(){
       window.localStorage.setItem("ltr","")
+      window.localStorage.setItem('ltr_url',this.url)
       this.docs=[]
       var fullUrl=this.url+'/select?indent=on&q='+this.query+'&fl='+this.fl+this.otherparams+'&wt=json';
       this.$http.get(fullUrl).then((data) => {

@@ -5,7 +5,7 @@
       <div class="form-group">
         <label class="col-sm-1 control-label" for="url">Solr url : </label>
         <div class="col-sm-3">
-          <input  @keyup.enter="search" type="text" class="form-control" id="url" @input="setUrl(url)" v-model:value="url">
+          <input  @keyup.enter="search" type="text" class="form-control" id="url" @input="setUrl" v-model:value="url">
         </div>
         <label class="col-sm-1 control-label" for="query">Query : </label>
         <div class="col-sm-3">
@@ -77,9 +77,9 @@ export default {
     }
   },
   methods: {
-    setUrl(url)
+    setUrl()
     {
-      window.localStorage.setItem('ltr_url',url)
+      window.localStorage.setItem('ltr_url',this.url)
     },
     sortByKey(array, key){
       return array.sort(function(a, b) {
@@ -92,8 +92,7 @@ export default {
       this.solr=[]
       this.columns_solr=[]
       this.columns=[]
-      window.localStorage.setItem('ltr_url',url)
-
+      window.localStorage.setItem('ltr_url',this.url)
       var fullUrl=this.url+'/select?indent=on&q='+this.query+'&rq='+encodeURI(this.rq)+'&fl='+this.fl+'&wt=json&rows=100';
       this.$http.get(fullUrl).then((data) => {
         var json = JSON.parse(data.body).response
