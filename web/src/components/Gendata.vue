@@ -3,7 +3,7 @@
     <div class="form-inline">
       <div class="form-group">
         <label for="url">Solr url : </label>
-        <input type="text" class="form-control" id="url" v-model:value='url' @keyup.enter="search">
+        <input type="text" class="form-control" id="url" v-model:value='url' @input="setUrl(url)" @keyup.enter="search">
       </div>
       <div class="form-group">
         <label for="query">Query : </label>
@@ -69,7 +69,7 @@ export default {
   },
   data(){
     return {
-      url:'http://localhost:8983/solr/corejouve',
+      url:window.localStorage.getItem('ltr_url')||'http://localhost:8983/solr/corejouve',
       query:'skirt',
       fl:'id,name_txt_en,description_txt_en',
       otherparams:'&rows=20',
@@ -82,6 +82,10 @@ export default {
     }
   },
   methods: {
+    setUrl(url)
+    {
+      window.localStorage.setItem('ltr_url',url)
+    },
     search(){
       window.localStorage.setItem("ltr","")
       this.docs=[]
