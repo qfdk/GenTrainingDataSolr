@@ -1,8 +1,10 @@
+var STORAGE_KEY = 'ltr'
+
 export default {
-  get: function (STORAGE_KEY) {
-    return JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '')
+  fetch: function () {
+    return JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '[]')
   },
-  set: function (STORAGE_KEY,data) {
+  save: function (data) {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
   }
 }
