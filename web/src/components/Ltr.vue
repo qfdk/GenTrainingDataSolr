@@ -36,14 +36,14 @@
     <hr>
     <p class="alert alert-warning text-center" v-show="!isFinish">No result found</p>
     <div class="row" v-show="isFinish">
-      <div class="col-xs-5">
+      <div class="col-xs-4">
         <h4> <span class="label label-success">Apache Solr</span></h4>
         <v-client-table :data="solr" :columns="columns_solr" :options="options"></v-client-table>
       </div>
 
-      <div class="col-xs-7">
+      <div class="col-xs-8">
         <h4> <span class="label label-info">Apache Solr with LTR</span></h4>
-        <v-client-table :data="docs" :columns="columns" :options="options"></v-client-table>
+        <v-client-table @row-click="changeData" :data="docs" :columns="columns" :options="options"></v-client-table>
       </div>
     </div>
   </div>
@@ -66,7 +66,8 @@ export default {
       isFinish:false,
       options:{
         filterable:false,
-        childRowKey:'id'
+        childRowKey:'id',
+        // skin:'table-hover'
       }
     }
   },
@@ -77,6 +78,9 @@ export default {
     }
   },
   methods: {
+    changeData: function (row) {
+         console.log(row);
+       },
     setUrl()
     {
       window.localStorage.setItem('ltr_url',this.url)
