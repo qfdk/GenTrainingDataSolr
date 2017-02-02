@@ -40,7 +40,6 @@
         <h4> <span class="label label-success">Apache Solr</span></h4>
         <v-client-table :data="solr" :columns="columns_solr" :options="options"></v-client-table>
       </div>
-
       <div class="col-xs-8">
         <h4> <span class="label label-info">Apache Solr with LTR</span></h4>
         <v-client-table @row-click="changeData" :data="docs" :columns="columns" :options="options"></v-client-table>
@@ -79,7 +78,7 @@ export default {
   },
   methods: {
     changeData: function (row) {
-         console.log(row);
+        //  console.log(row);
        },
     setUrl()
     {
@@ -108,6 +107,14 @@ export default {
             this.columns=Object.keys(this.docs[0])
             this.columns.unshift('No.')
             this.docs.forEach(function(e,index){
+
+            this.fl.split(",").forEach(function(f){
+            if(typeof e[f]==='boolean')
+            {
+              var tmp = e[f]
+                e[f]=tmp.toString()
+            }
+            },this)
               e['No.']=index+1
             },this)
             // copy array !!!
