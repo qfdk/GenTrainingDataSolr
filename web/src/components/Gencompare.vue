@@ -1,5 +1,5 @@
 <template>
-  <div class="ltr">
+  <div class="gencompare">
     <div class="form-horizontal">
 
       <div class="form-group">
