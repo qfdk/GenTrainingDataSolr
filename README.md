@@ -10,7 +10,7 @@ npm run dev
 ![](./imgs/1.png)
 
 Using traing Data in your `query.txt`, run `traing_data.py` then enjoy :)
-For more detail [Bloomberg LTR](https://github.com/bloomberg/lucene-solr)
+For more detail [Apache Solr LTR](https://github.com/apache/lucene-solr/tree/master/solr/contrib/ltr)
 ![](./imgs/2.png)
 
 ## Production
@@ -81,4 +81,4 @@ Add this code in `server/solr-webapp/webapp/WEB-INF/web.xml`
 
 ## Referances
 
-[Bloomberg LTR](https://github.com/bloomberg/lucene-solr)
+[Apache Solr LTR](https://github.com/apache/lucene-solr/tree/master/solr/contrib/ltr)
