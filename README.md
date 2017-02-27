@@ -79,6 +79,6 @@ Add this code in `server/solr-webapp/webapp/WEB-INF/web.xml`
 </filter-mapping>
 ```
 
-## Referances
+## References
 
 [Apache Solr LTR](https://github.com/apache/lucene-solr/tree/master/solr/contrib/ltr)
