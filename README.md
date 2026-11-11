@@ -82,9 +82,3 @@ Add this code in `server/solr-webapp/webapp/WEB-INF/web.xml`
 ## References
 
 [Apache Solr LTR](https://github.com/apache/lucene-solr/tree/master/solr/contrib/ltr)
-
-## Sponsor
-
-<a href="https://voilapro.app/?ref=github-gentrainingdatasolr"><img src="voila-banner.png" alt="Voilà Pro" width="500"/></a>
-
-This project is sponsored by [Voilà Pro](https://voilapro.app/?ref=github-gentrainingdatasolr) — voice typing for macOS. Hold a key, speak, and the text lands at your cursor, in any mix of languages.
